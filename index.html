@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clone de Sites</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin: 10px 0 30px;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+        input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+        }
+        input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        button {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        button:hover { transform: scale(1.05); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .quick-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        .quick-links button {
+            background: #f0f0f0;
+            color: #333;
+            padding: 8px 15px;
+            font-size: 12px;
+            flex: 1;
+            min-width: 80px;
+        }
+        .quick-links button:hover {
+            background: #667eea;
+            color: white;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .result {
+            display: none;
+        }
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+        .btn-fechar {
+            background: #ff4444;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .clone-frame {
+            width: 100%;
+            height: 550px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .clone-frame iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .downloads-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .download-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #eee;
+        }
+        .download-item:hover {
+            border-color: #667eea;
+        }
+        .download-item .info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            flex: 1;
+        }
+        .download-item .info .name {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        .download-item .info .details {
+            font-size: 12px;
+            color: #999;
+        }
+        .download-item .actions {
+            display: flex;
+            gap: 5px;
+        }
+        .download-item .actions button {
+            padding: 5px 12px;
+            font-size: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-view { background: #2196F3; color: white; }
+        .btn-view:hover { background: #1976D2; }
+        .btn-delete { background: #f44336; color: white; }
+        .btn-delete:hover { background: #d32f2f; }
+        .footer {
+            text-align: center;
+            color: #999;
+            font-size: 0.85em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .erro {
+            background: #fee;
+            color: #c00;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #c00;
+            display: none;
+        }
+        @media (max-width: 600px) {
+            .input-group { flex-direction: column; }
+            .clone-frame { height: 350px; }
+            .download-item { flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CARD PRINCIPAL -->
+        <div class="card">
+            <h1>🔷 Clone de Sites</h1>
+            <p class="subtitle">Digite a URL e clique em "Clonar e Baixar"</p>
+
+            <div class="input-group">
+                <input type="text" id="urlInput" placeholder="exemplo.com.br">
+                <button id="cloneBtn" onclick="clonar()">⚡ Clonar e Baixar</button>
+            </div>
+
+            <div class="quick-links">
+                <button onclick="preencher('mercadolivre.com.br')">🛒 Mercado Livre</button>
+                <button onclick="preencher('ze.delivery')">📦 Zé Delivery</button>
+                <button onclick="preencher('github.com')">🐙 GitHub</button>
+                <button onclick="preencher('google.com')">🔍 Google</button>
+            </div>
+
+            <div id="erro" class="erro"></div>
+        </div>
+
+        <!-- LOADING -->
+        <div id="loading" class="card loading">
+            <div class="spinner"></div>
+            <p>Clonando o site... Aguarde</p>
+            <p style="font-size:12px;color:#999;">O site será salvo automaticamente na pasta downloads</p>
+        </div>
+
+        <!-- RESULTADO -->
+        <div id="result" class="card result">
+            <div class="result-header">
+                <h2 style="color:#333;">📄 Site Clonado</h2>
+                <button class="btn-fechar" onclick="fechar()">✕</button>
+            </div>
+            <div id="cloneContainer" class="clone-frame"></div>
+        </div>
+
+        <!-- DOWNLOADS -->
+        <div class="card">
+            <h2 style="color:#333;margin-bottom:15px;">📦 Sites Baixados</h2>
+            <div id="downloadsList" class="downloads-list">
+                <p style="color:#999;text-align:center;padding:20px;">Carregando...</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            ⚠️ Apenas para fins educacionais. Os sites são salvos na pasta <strong>downloads</strong>
+        </div>
+    </div>
+
+    <script>
+        // ========== VARIÁVEIS ==========
+        let downloads = [];
+
+        // ========== CLONAR SITE ==========
+        async function clonar() {
+            const input = document.getElementById('urlInput');
+            let url = input.value.trim();
+            
+            if (!url) {
+                mostrarErro('Digite uma URL!');
+                return;
+            }
+
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+
+            try {
+                new URL(url);
+            } catch (e) {
+                mostrarErro('URL inválida!');
+                return;
+            }
+
+            document.getElementById('erro').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('cloneBtn').disabled = true;
+            document.getElementById('cloneBtn').textContent = '⏳ Clonando...';
+
+            try {
+                const apiUrl = `/api/clone?url=${encodeURIComponent(url)}`;
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('result').style.display = 'block';
+                
+                document.getElementById('cloneContainer').innerHTML = `
+                    <iframe src="${apiUrl}" 
+                            style="width:100%;height:100%;border:none;"
+                            sandbox="allow-scripts allow-same-origin allow-forms">
+                    </iframe>
+                `;
+                
+                // Recarrega a lista após clonar
+                setTimeout(carregarDownloads, 2000);
+
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                mostrarErro('Erro: ' + error.message);
+            } finally {
+                document.getElementById('cloneBtn').disabled = false;
+                document.getElementById('cloneBtn').textContent = '⚡ Clonar e Baixar';
+            }
+        }
+
+        // ========== PREENCHER URL ==========
+        function preencher(url) {
+            document.getElementById('urlInput').value = url;
+            clonar();
+        }
+
+        // ========== FECHAR ==========
+        function fechar() {
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('cloneContainer').innerHTML = '';
+        }
+
+        // ========== MOSTRAR ERRO ==========
+        function mostrarErro(msg) {
+            const erro = document.getElementById('erro');
+            erro.textContent = '❌ ' + msg;
+            erro.style.display = 'block';
+            setTimeout(() => {
+                erro.style.display = 'none';
+            }, 5000);
+        }
+
+        // ========== CARREGAR DOWNLOADS ==========
+        async function carregarDownloads() {
+            try {
+                const response = await fetch('/api/downloads');
+                if (!response.ok) throw new Error('Erro ao carregar');
+                
+                downloads = await response.json();
+                renderizarDownloads();
+            } catch (error) {
+                document.getElementById('downloadsList').innerHTML = `
+                    <p style="color:#999;text-align:center;padding:20px;">
+                        ❌ Erro ao carregar downloads
+                    </p>
+                `;
+            }
+        }
+
+        // ========== RENDERIZAR DOWNLOADS ==========
+        function renderizarDownloads() {
+            const container = document.getElementById('downloadsList');
+            
+            if (!downloads || downloads.length === 0) {
+                container.innerHTML = `
+                    <p style="color:#999;text-align:center;padding:20px;">
+                        📭 Nenhum site baixado ainda
+                    </p>
+                `;
+                return;
+            }
+
+            container.innerHTML = downloads.map(item => {
+                const nome = item.title || item.hostname || item.folder || 'Sem nome';
+                const data = item.clonedAt ? new Date(item.clonedAt).toLocaleString() : 'Data desconhecida';
+                const tamanho = item.size || '0 B';
+                
+                return `
+                    <div class="download-item">
+                        <div class="info">
+                            <span class="name">${nome}</span>
+                            <span class="details">
+                                📁 ${item.folder} • 📦 ${tamanho} • 📅 ${data}
+                            </span>
+                        </div>
+                        <div class="actions">
+                            <button class="btn-view" onclick="verDownload('${item.folder}')">👁️ Ver</button>
+                            <button class="btn-delete" onclick="deletarDownload('${item.folder}')">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ========== VER DOWNLOAD ==========
+        function verDownload(folder) {
+            // Abre o index.html da pasta
+            window.open(`/downloads/${folder}/index.html`, '_blank');
+        }
+
+        // ========== DELETAR DOWNLOAD ==========
+        async function deletarDownload(folder) {
+            if (!confirm(`Deseja deletar "${folder}"?`)) return;
+
+            try {
+                const response = await fetch(`/api/delete-download/${folder}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    alert('✅ Deletado com sucesso!');
+                    carregarDownloads();
+                } else {
+                    alert('❌ Erro ao deletar');
+                }
+            } catch (error) {
+                alert('❌ Erro: ' + error.message);
+            }
+        }
+
+        // ========== EVENTOS ==========
+        document.getElementById('urlInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') clonar();
+        });
+
+        // ========== INICIALIZAR ==========
+        carregarDownloads();
+        setInterval(carregarDownloads, 30000);
+
+        console.log('✅ Clone de Sites carregado!');
+    </script>
+</body>
+</html>

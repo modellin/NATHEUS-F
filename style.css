@@ -1,0 +1,429 @@
+/* ========== RESET ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ========== BODY ========== */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+/* ========== CONTAINER ========== */
+.container {
+    background: white;
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 950px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.6s ease;
+    margin: 20px auto;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== HEADER ========== */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 2.8em;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+    font-weight: 800;
+}
+
+.header p {
+    color: #666;
+    font-size: 1.1em;
+}
+
+/* ========== INPUT ========== */
+.input-section {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.url-input-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #f5f5f5;
+    border-radius: 14px;
+    padding: 0 18px;
+    border: 2px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.url-input-wrapper:focus-within {
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.url-prefix {
+    color: #999;
+    font-weight: 500;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+#urlInput {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 16px 0;
+    font-size: 16px;
+    outline: none;
+    color: #333;
+    font-weight: 500;
+}
+
+#urlInput::placeholder {
+    color: #bbb;
+    font-weight: 400;
+}
+
+#cloneBtn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 16px 35px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+#cloneBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+}
+
+#cloneBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-icon {
+    font-size: 20px;
+}
+
+/* ========== QUICK BUTTONS ========== */
+.quick-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.quick-buttons button {
+    background: #f0f0f0;
+    color: #555;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    flex: 1;
+    min-width: 80px;
+}
+
+.quick-buttons button:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* ========== LOADING ========== */
+.loading {
+    text-align: center;
+    padding: 40px 20px;
+    background: #f8f9fa;
+    border-radius: 14px;
+    margin: 10px 0;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading p {
+    color: #666;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+/* ========== RESULTADO ========== */
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.result-header h2 {
+    color: #333;
+    font-size: 1.3em;
+    font-weight: 700;
+}
+
+.btn-fechar {
+    background: #ff4444;
+    color: white;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-fechar:hover {
+    background: #cc0000;
+    transform: rotate(90deg);
+}
+
+.clone-container {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 14px;
+    overflow: hidden;
+    height: 600px;
+}
+
+.clone-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* ========== DOWNLOADS ========== */
+.downloads-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e0e0e0;
+}
+
+.downloads-section h2 {
+    color: #333;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.downloads-list {
+    background: #f8f9fa;
+    border-radius: 14px;
+    padding: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.download-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.download-item:hover {
+    border-color: #667eea;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+}
+
+.download-item .info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.download-item .info .name {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.download-item .info .details {
+    font-size: 12px;
+    color: #999;
+}
+
+.download-item .actions {
+    display: flex;
+    gap: 8px;
+}
+
+.download-item .actions button {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.download-item .actions .btn-view {
+    background: #2196F3;
+    color: white;
+}
+
+.download-item .actions .btn-view:hover {
+    background: #1976D2;
+    transform: scale(1.05);
+}
+
+.download-item .actions .btn-download {
+    background: #4CAF50;
+    color: white;
+}
+
+.download-item .actions .btn-download:hover {
+    background: #388E3C;
+    transform: scale(1.05);
+}
+
+.download-item .actions .btn-delete {
+    background: #f44336;
+    color: white;
+}
+
+.download-item .actions .btn-delete:hover {
+    background: #d32f2f;
+    transform: scale(1.05);
+}
+
+/* ========== FOOTER ========== */
+.footer {
+    margin-top: 30px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.footer p {
+    color: #999;
+    font-size: 0.85em;
+}
+
+/* ========== RESPONSIVIDADE ========== */
+@media (max-width: 768px) {
+    .container {
+        padding: 25px;
+    }
+    
+    .header h1 {
+        font-size: 2em;
+    }
+    
+    .input-section {
+        flex-direction: column;
+    }
+    
+    #cloneBtn {
+        justify-content: center;
+    }
+    
+    .clone-container {
+        height: 400px;
+    }
+    
+    .download-item {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+    
+    .download-item .actions {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .header h1 {
+        font-size: 1.6em;
+    }
+    
+    .clone-container {
+        height: 300px;
+    }
+    
+    .quick-buttons button {
+        font-size: 10px;
+        min-width: 60px;
+    }
+}
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #764ba2;
+}
